@@ -1,5 +1,5 @@
-with open("input.txt") as f: 
-    Input = f.read()
+with open("input.txt") as file: 
+    Input = file.read()
 
 num = ['one','two','three','four','five','six','seven','eight','nine']
 
