@@ -14,7 +14,7 @@ local wordNums = {
 
 Utils.alphabet = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ" 
 --//Tables
-function Utils.create(iterable,func:(i:any,v:any)->boolean)
+function Utils.create(iterable,func:(i:any,v:any)->any)
     local t = {}
     for i,v in Utils.iter(iterable) do
         if func then
@@ -88,11 +88,10 @@ function Utils.print(...)
             local keyStr = tostring(k)
             local valueStr = ""
             local valueType = type(v)
-    
             if valueType == "table" then
                 valueStr = printFormattedTable(v, indent + 1)
             elseif valueType == "string" then
-                valueStr = '"' .. tostring(v) .. '"'
+                valueStr = '"' .. v .. '"'
             else
                 valueStr = tostring(v)
             end
