@@ -1,13 +1,31 @@
 local Utils = {}
--- A simple Util library I made for python like funcs 
+local wordNums = {
+    ["zero"] = "0",
+    ["one"] = "1",
+    ["two"] = "2",
+    ["three"] = "3",
+    ["four"] = "4",
+    ["five"] = "5",
+    ["six"] = "6",
+    ["seven"] = "7",
+    ["eight"] = "8",
+    ["nine"] = "9",
+}
+
+Utils.alphabet = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ" 
 --//Tables
-function Utils.iterate(iter,func:(i:any,v:any)->boolean)
+function Utils.create(iterable,func:(i:any,v:any)->boolean)
     local t = {}
-    for i,v in iter do
-        if not func or (func and func(i,v)) then
+    for i,v in Utils.iter(iterable) do
+        if func then
+            local value = func(i,v)
+            if not value then continue end 
+            table.insert(t,value)
+        elseif not func then
             table.insert(t,v)
         end
     end
+    return t
 end
 
 function Utils.reverse(tbl)
@@ -83,17 +101,48 @@ function Utils.print(...)
         output = output .. string.rep("    ", indent - 1) .. "}"
         return output
     end
-    local str 
+    local str = ""
     for i,v in {...} do
         if type(v) == "table" then
             str = printFormattedTable(v,1) .. '\n'
         else
-            str ..= v..' '
+            str ..= tostring(v)..' '
         end
     end
     print(str)
 end
 --//Other
+function iterHelper (a, i)
+    i = i + 1
+    local v = a[i]
+    if v ~= nil then
+        return i, v
+    end
+    return 
+end
+
+function Utils.iter(x)
+    if type(x) =="table" then 
+        if x[1] then
+            return iterHelper,x,0
+        else
+            return next,x 
+        end
+    elseif type(x) =="string" then
+        return iterHelper,x:split(""),0
+    end   
+    error("Given Type cannot be iterable")
+end
+local function helperAllIter(x)
+    return type(x) == "string" or type(x) =="table"
+end
+function Utils.allIterable(x)
+    for i,v in x do
+        if not helperAllIter(v) then return false end 
+    end
+    return true 
+end
+
 function Utils.round(x,to)
     to = to or 0
     return math.round(x*10^to)/10^to
@@ -113,7 +162,12 @@ function Utils.chr(byte)
     return string.char(byte)
 end
 
-
+function Utils.replaceWordNums(str)
+    for word, num in pairs(wordNums) do
+        str = str:gsub(word, num)
+    end
+    return str
+end
 
 
 --//Math
