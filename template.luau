@@ -1,4 +1,4 @@
-local inputString = require("file")[1]
+local inputString ="" -- require("file")[1]
 local inputTable = inputString:split('\n')
 local Utils = require("Libraries/Utils")
 local print = Utils.print
