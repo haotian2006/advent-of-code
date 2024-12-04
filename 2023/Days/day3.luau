@@ -12,6 +12,7 @@ local create = Utils.create
 local dir ={
     {1,1},{-1,-1},{0,1},{1,0},{-1,0},{0,-1},{1,-1},{-1,1}
 }
+
 local function prompt()
     local arry = {{}}
     local function find(r,c)
